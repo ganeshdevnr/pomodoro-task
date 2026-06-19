@@ -11,28 +11,44 @@ function App() {
   // useRef keeps the interval id between renders without causing re-renders.
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // useEffect starts the interval while running and cleans it up to avoid duplicate timers.
   useEffect(() => {
+
+    // When the remaining seconds reaches zero, stop the timer and reset.
+    if (remainingSeconds === 0) {
+      setIsRunning(false)
+      setRemainingSeconds(INITIAL_SECONDS)
+    }
+
+  }, [remainingSeconds]);
+
+  useEffect(() => {
+
     if (isRunning) {
+      // Start the interval to update the remaining seconds every second.
       intervalRef.current = setInterval(() => {
-        setRemainingSeconds((seconds) => {
-          if (seconds <= 1) {
-            setIsRunning(false)
+
+        // update the remaining seconds.
+        setRemainingSeconds((prev) => {
+          // If the timer has reached zero, stop the timer and reset.
+          if (prev <= 1) {
             return 0
           }
-
-          return seconds - 1
+          // Otherwise, decrement the remaining seconds.
+          return prev - 1
         })
-      }, 1000)
+
+      }, 1000);
     }
 
     return () => {
-      if (intervalRef.current !== null) {
+      // Clear the interval when the component unmounts or when isRunning changes.
+      if (intervalRef.current) {
         clearInterval(intervalRef.current)
         intervalRef.current = null
       }
     }
-  }, [isRunning])
+
+  }, [isRunning]);
 
   const minutes = Math.floor(remainingSeconds / 60)
   const seconds = remainingSeconds % 60
@@ -41,8 +57,8 @@ function App() {
   ).padStart(2, '0')}`
 
   function handleReset() {
-    setIsRunning(false)
     setRemainingSeconds(INITIAL_SECONDS)
+    // setIsRunning(false)
   }
 
   return (
