@@ -1,6 +1,9 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import './App.css'
 
+import { Header } from './components/header/Header'
+import Button from './components/button/Button'
+
 const INITIAL_SECONDS = 25 * 60
 
 type RemainingSecondsAction = { type: 'tick' } | { type: 'reset' }
@@ -55,36 +58,32 @@ function App() {
   ).padStart(2, '0')}`
 
   function handleReset() {
-    setIsRunning(false)
     dispatchRemainingSeconds({ type: 'reset' })
+  }
+
+  const header = {
+    title: 'Focus Timer',
   }
 
   return (
     <main className="timer-shell">
       <section className="timer-card" aria-labelledby="timer-title">
-        <p className="timer-label">Pomodoro</p>
-        <h1 id="timer-title">Focus Timer</h1>
+        <Header {...header} />
         <div className="timer-display" role="timer" aria-live="polite">
           {formattedTime}
         </div>
         <div className="timer-controls" aria-label="Timer controls">
-          <button
-            type="button"
+          <Button
             onClick={() => setIsRunning(true)}
             disabled={isRunning || remainingSeconds === 0}
           >
             Start
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsRunning(false)}
-            disabled={!isRunning}
-          >
+          </Button>
+
+          <Button onClick={() => setIsRunning(false)} disabled={!isRunning}>
             Pause
-          </button>
-          <button type="button" onClick={handleReset}>
-            Reset
-          </button>
+          </Button>
+          <Button onClick={handleReset}>Reset</Button>
         </div>
       </section>
     </main>
