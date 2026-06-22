@@ -1,0 +1,29 @@
+.analytics-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.analytics-card {
+  width: min(100%, 420px);
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg-2);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.analytics-card h1 {
+  margin: 0 0 12px;
+  color: var(--text-h);
+  font-size: clamp(28px, 6vw, 40px);
+}
+
+.analytics-card p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1.6;
+}

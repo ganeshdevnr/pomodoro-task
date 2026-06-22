@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useBlocker, Block } from '@tanstack/react-router'
 import { HomePage } from '../pages/home/home'
 
 export const Route = createFileRoute('/')({
@@ -6,5 +6,16 @@ export const Route = createFileRoute('/')({
 })
 
 function RouteComponent() {
-  return <HomePage />
+  useBlocker({
+    shouldBlockFn: () => {
+      const answer = window.confirm('Timer is running. Leave and reset it?')
+      return !answer
+    },
+  })
+
+  return (
+    <>
+      <HomePage />
+    </>
+  )
 }
