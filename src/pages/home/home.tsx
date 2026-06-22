@@ -1,62 +1,12 @@
-import { useEffect, useReducer, useRef, useState } from 'react'
-
 import './home.css'
 
 import { Header } from '../../components/header/Header'
 import Button from '../../components/button/Button'
-
-const INITIAL_SECONDS = 25 * 60
-
-type RemainingSecondsAction = { type: 'tick' } | { type: 'reset' }
-
-function remainingSecondsReducer(
-  remainingSeconds: number,
-  action: RemainingSecondsAction,
-) {
-  switch (action.type) {
-    case 'tick':
-      return Math.max(remainingSeconds - 1, 0)
-    case 'reset':
-      return INITIAL_SECONDS
-  }
-}
+import { useTimer } from '../../contexts/timer/useTimer'
 
 export function HomePage() {
-  const [remainingSeconds, dispatchRemainingSeconds] = useReducer(
-    remainingSecondsReducer,
-    INITIAL_SECONDS,
-  )
-  const [isRunning, setIsRunning] = useState(false)
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        if (remainingSeconds <= 1) {
-          setIsRunning(false)
-        }
-
-        dispatchRemainingSeconds({ type: 'tick' })
-      }, 1000)
-    }
-
-    return () => {
-      if (intervalRef.current !== null) {
-        clearInterval(intervalRef.current)
-        intervalRef.current = null
-      }
-    }
-  }, [isRunning, remainingSeconds])
-
-  const minutes = Math.floor(remainingSeconds / 60)
-  const seconds = remainingSeconds % 60
-  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(
-    seconds,
-  ).padStart(2, '0')}`
-
-  function handleReset() {
-    dispatchRemainingSeconds({ type: 'reset' })
-  }
+  const { formattedTime, isRunning, remainingSeconds, start, pause, reset } =
+    useTimer()
 
   const header = {
     title: 'Focus Timer',
@@ -72,16 +22,16 @@ export function HomePage() {
           </div>
           <div className="timer-controls" aria-label="Timer controls">
             <Button
-              onClick={() => setIsRunning(true)}
+              onClick={start}
               disabled={isRunning || remainingSeconds === 0}
             >
               Start
             </Button>
 
-            <Button onClick={() => setIsRunning(false)} disabled={!isRunning}>
+            <Button onClick={pause} disabled={!isRunning}>
               Pause
             </Button>
-            <Button onClick={handleReset}>Reset</Button>
+            <Button onClick={reset}>Reset</Button>
           </div>
         </section>
       </main>
