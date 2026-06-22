@@ -1,8 +1,9 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
-import './App.css'
 
-import { Header } from './components/header/Header'
-import Button from './components/button/Button'
+import './home.css'
+
+import { Header } from '../../components/header/Header'
+import Button from '../../components/button/Button'
 
 const INITIAL_SECONDS = 25 * 60
 
@@ -20,18 +21,14 @@ function remainingSecondsReducer(
   }
 }
 
-function App() {
-  // useReducer centralizes the countdown updates for ticking and resetting.
+export function HomePage() {
   const [remainingSeconds, dispatchRemainingSeconds] = useReducer(
     remainingSecondsReducer,
     INITIAL_SECONDS,
   )
-  // useState tracks whether the timer should currently be ticking.
   const [isRunning, setIsRunning] = useState(false)
-  // useRef keeps the interval id between renders without causing re-renders.
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // useEffect starts the interval while running and cleans it up to avoid duplicate timers.
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = setInterval(() => {
@@ -66,28 +63,28 @@ function App() {
   }
 
   return (
-    <main className="timer-shell">
-      <section className="timer-card" aria-labelledby="timer-title">
-        <Header {...header} />
-        <div className="timer-display" role="timer" aria-live="polite">
-          {formattedTime}
-        </div>
-        <div className="timer-controls" aria-label="Timer controls">
-          <Button
-            onClick={() => setIsRunning(true)}
-            disabled={isRunning || remainingSeconds === 0}
-          >
-            Start
-          </Button>
+    <>
+      <main className="timer-shell">
+        <section className="timer-card" aria-labelledby="timer-title">
+          <Header {...header} />
+          <div className="timer-display" role="timer" aria-live="polite">
+            {formattedTime}
+          </div>
+          <div className="timer-controls" aria-label="Timer controls">
+            <Button
+              onClick={() => setIsRunning(true)}
+              disabled={isRunning || remainingSeconds === 0}
+            >
+              Start
+            </Button>
 
-          <Button onClick={() => setIsRunning(false)} disabled={!isRunning}>
-            Pause
-          </Button>
-          <Button onClick={handleReset}>Reset</Button>
-        </div>
-      </section>
-    </main>
+            <Button onClick={() => setIsRunning(false)} disabled={!isRunning}>
+              Pause
+            </Button>
+            <Button onClick={handleReset}>Reset</Button>
+          </div>
+        </section>
+      </main>
+    </>
   )
 }
-
-export default App
