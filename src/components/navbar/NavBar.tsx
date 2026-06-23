@@ -14,6 +14,12 @@ const options = linkOptions([
     className: 'nav-link',
     activeProps: { className: 'active' },
   },
+  {
+    to: '/posts',
+    label: 'Posts',
+    className: 'nav-link',
+    activeProps: { className: 'active' },
+  },
 ])
 
 export function NavBar() {
