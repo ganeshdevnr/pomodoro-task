@@ -5,8 +5,13 @@ import Button from '../../components/button/Button'
 import { useTimer } from '../../contexts/timer/useTimer'
 
 export function HomePage() {
-  const { formattedTime, isRunning, remainingSeconds, start, pause, reset } =
-    useTimer()
+  const { isRunning, remainingSeconds, start, pause, reset } = useTimer()
+
+  const minutes = Math.floor(remainingSeconds / 60)
+  const seconds = remainingSeconds % 60
+  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(
+    seconds,
+  ).padStart(2, '0')}`
 
   const header = {
     title: 'Focus Timer',

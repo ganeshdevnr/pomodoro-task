@@ -1,7 +1,6 @@
 import { createContext } from 'react'
 
 export interface TimerContextValue {
-  formattedTime: string
   isRunning: boolean
   remainingSeconds: number
   start: () => void

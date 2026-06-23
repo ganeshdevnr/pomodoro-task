@@ -1,73 +1,85 @@
-import { useEffect, useReducer, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useReducer, type ReactNode } from 'react'
 import { TimerContext } from './context'
 
 const INITIAL_SECONDS = 25 * 60
 
-type RemainingSecondsAction = { type: 'tick' } | { type: 'reset' }
+type TimerState = {
+  remainingSeconds: number
+  isRunning: boolean
+}
 
-function remainingSecondsReducer(
-  remainingSeconds: number,
-  action: RemainingSecondsAction,
-) {
+type TimerAction =
+  | { type: 'start' }
+  | { type: 'pause' }
+  | { type: 'reset' }
+  | { type: 'tick' }
+
+function timerReducer(state: TimerState, action: TimerAction): TimerState {
   switch (action.type) {
-    case 'tick':
-      return Math.max(remainingSeconds - 1, 0)
+    case 'start':
+      return {
+        ...state,
+        isRunning: state.remainingSeconds > 0,
+      }
+
+    case 'pause':
+      return {
+        ...state,
+        isRunning: false,
+      }
+
     case 'reset':
-      return INITIAL_SECONDS
+      return {
+        remainingSeconds: INITIAL_SECONDS,
+        isRunning: false,
+      }
+
+    case 'tick': {
+      const remainingSeconds = Math.max(state.remainingSeconds - 1, 0)
+
+      return {
+        remainingSeconds,
+        isRunning: remainingSeconds > 0,
+      }
+    }
   }
 }
 
 export function TimerProvider({ children }: { children: ReactNode }) {
-  const [remainingSeconds, dispatchRemainingSeconds] = useReducer(
-    remainingSecondsReducer,
-    INITIAL_SECONDS,
-  )
-  const [isRunning, setIsRunning] = useState(false)
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [state, dispatch] = useReducer(timerReducer, {
+    remainingSeconds: INITIAL_SECONDS,
+    isRunning: false,
+  })
 
   useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        if (remainingSeconds <= 1) {
-          setIsRunning(false)
-        }
-
-        dispatchRemainingSeconds({ type: 'tick' })
-      }, 1000)
+    if (!state.isRunning) {
+      return
     }
 
-    return () => {
-      if (intervalRef.current !== null) {
-        clearInterval(intervalRef.current)
-        intervalRef.current = null
-      }
-    }
-  }, [isRunning, remainingSeconds])
+    const intervalId = setInterval(() => {
+      dispatch({ type: 'tick' })
+    }, 1000)
 
-  const minutes = Math.floor(remainingSeconds / 60)
-  const seconds = remainingSeconds % 60
-  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(
-    seconds,
-  ).padStart(2, '0')}`
+    return () => clearInterval(intervalId)
+  }, [state.isRunning])
 
   function start() {
-    setIsRunning(true)
+    dispatch({ type: 'start' })
   }
 
   function pause() {
-    setIsRunning(false)
+    dispatch({ type: 'pause' })
   }
 
   function reset() {
-    dispatchRemainingSeconds({ type: 'reset' })
+    dispatch({ type: 'reset' })
   }
 
   return (
     <TimerContext.Provider
       value={{
-        formattedTime,
-        isRunning,
-        remainingSeconds,
+        isRunning: state.isRunning,
+        remainingSeconds: state.remainingSeconds,
         start,
         pause,
         reset,
