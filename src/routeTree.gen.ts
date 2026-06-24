@@ -9,75 +9,101 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AnalyticsRouteImport } from './routes/analytics'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as postPostsRouteImport } from './routes/(post)/posts'
-import { Route as postPostsPostIdRouteImport } from './routes/(post)/posts.$postId'
-import { Route as postPostsPostIdCommentsRouteImport } from './routes/(post)/posts.$postId.comments'
-import { Route as postPostsPostIdCommentsCommentIdRouteImport } from './routes/(post)/posts.$postId.comments.$commentId'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as AdminRouteImport } from './routes/_admin'
+import { Route as LayoutHomeRouteImport } from './routes/_layout.home'
+import { Route as LayoutAnalyticsRouteImport } from './routes/_layout.analytics'
+import { Route as LayoutpostPostsRouteImport } from './routes/_layout/(post)/posts'
+import { Route as AdminadminAdminRouteImport } from './routes/_admin/(admin)/admin'
+import { Route as LayoutpostPostsPostIdRouteImport } from './routes/_layout/(post)/posts.$postId'
+import { Route as LayoutpostPostsPostIdCommentsRouteImport } from './routes/_layout/(post)/posts.$postId.comments'
+import { Route as LayoutpostPostsPostIdCommentsCommentIdRouteImport } from './routes/_layout/(post)/posts.$postId.comments.$commentId'
 
-const AnalyticsRoute = AnalyticsRouteImport.update({
+const LayoutRoute = LayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutHomeRoute = LayoutHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutAnalyticsRoute = LayoutAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const postPostsRoute = postPostsRouteImport.update({
+const LayoutpostPostsRoute = LayoutpostPostsRouteImport.update({
   id: '/(post)/posts',
   path: '/posts',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
 } as any)
-const postPostsPostIdRoute = postPostsPostIdRouteImport.update({
+const AdminadminAdminRoute = AdminadminAdminRouteImport.update({
+  id: '/(admin)/admin',
+  path: '/admin',
+  getParentRoute: () => AdminRoute,
+} as any)
+const LayoutpostPostsPostIdRoute = LayoutpostPostsPostIdRouteImport.update({
   id: '/$postId',
   path: '/$postId',
-  getParentRoute: () => postPostsRoute,
+  getParentRoute: () => LayoutpostPostsRoute,
 } as any)
-const postPostsPostIdCommentsRoute = postPostsPostIdCommentsRouteImport.update({
-  id: '/comments',
-  path: '/comments',
-  getParentRoute: () => postPostsPostIdRoute,
-} as any)
-const postPostsPostIdCommentsCommentIdRoute =
-  postPostsPostIdCommentsCommentIdRouteImport.update({
+const LayoutpostPostsPostIdCommentsRoute =
+  LayoutpostPostsPostIdCommentsRouteImport.update({
+    id: '/comments',
+    path: '/comments',
+    getParentRoute: () => LayoutpostPostsPostIdRoute,
+  } as any)
+const LayoutpostPostsPostIdCommentsCommentIdRoute =
+  LayoutpostPostsPostIdCommentsCommentIdRouteImport.update({
     id: '/$commentId',
     path: '/$commentId',
-    getParentRoute: () => postPostsPostIdCommentsRoute,
+    getParentRoute: () => LayoutpostPostsPostIdCommentsRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/posts': typeof postPostsRouteWithChildren
-  '/posts/$postId': typeof postPostsPostIdRouteWithChildren
-  '/posts/$postId/comments': typeof postPostsPostIdCommentsRouteWithChildren
-  '/posts/$postId/comments/$commentId': typeof postPostsPostIdCommentsCommentIdRoute
+  '/': typeof LayoutRouteWithChildren
+  '/analytics': typeof LayoutAnalyticsRoute
+  '/home': typeof LayoutHomeRoute
+  '/admin': typeof AdminadminAdminRoute
+  '/posts': typeof LayoutpostPostsRouteWithChildren
+  '/posts/$postId': typeof LayoutpostPostsPostIdRouteWithChildren
+  '/posts/$postId/comments': typeof LayoutpostPostsPostIdCommentsRouteWithChildren
+  '/posts/$postId/comments/$commentId': typeof LayoutpostPostsPostIdCommentsCommentIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/posts': typeof postPostsRouteWithChildren
-  '/posts/$postId': typeof postPostsPostIdRouteWithChildren
-  '/posts/$postId/comments': typeof postPostsPostIdCommentsRouteWithChildren
-  '/posts/$postId/comments/$commentId': typeof postPostsPostIdCommentsCommentIdRoute
+  '/': typeof LayoutRouteWithChildren
+  '/analytics': typeof LayoutAnalyticsRoute
+  '/home': typeof LayoutHomeRoute
+  '/admin': typeof AdminadminAdminRoute
+  '/posts': typeof LayoutpostPostsRouteWithChildren
+  '/posts/$postId': typeof LayoutpostPostsPostIdRouteWithChildren
+  '/posts/$postId/comments': typeof LayoutpostPostsPostIdCommentsRouteWithChildren
+  '/posts/$postId/comments/$commentId': typeof LayoutpostPostsPostIdCommentsCommentIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/(post)/posts': typeof postPostsRouteWithChildren
-  '/(post)/posts/$postId': typeof postPostsPostIdRouteWithChildren
-  '/(post)/posts/$postId/comments': typeof postPostsPostIdCommentsRouteWithChildren
-  '/(post)/posts/$postId/comments/$commentId': typeof postPostsPostIdCommentsCommentIdRoute
+  '/_admin': typeof AdminRouteWithChildren
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/analytics': typeof LayoutAnalyticsRoute
+  '/_layout/home': typeof LayoutHomeRoute
+  '/_admin/(admin)/admin': typeof AdminadminAdminRoute
+  '/_layout/(post)/posts': typeof LayoutpostPostsRouteWithChildren
+  '/_layout/(post)/posts/$postId': typeof LayoutpostPostsPostIdRouteWithChildren
+  '/_layout/(post)/posts/$postId/comments': typeof LayoutpostPostsPostIdCommentsRouteWithChildren
+  '/_layout/(post)/posts/$postId/comments/$commentId': typeof LayoutpostPostsPostIdCommentsCommentIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/analytics'
+    | '/home'
+    | '/admin'
     | '/posts'
     | '/posts/$postId'
     | '/posts/$postId/comments'
@@ -86,116 +112,167 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/analytics'
+    | '/home'
+    | '/admin'
     | '/posts'
     | '/posts/$postId'
     | '/posts/$postId/comments'
     | '/posts/$postId/comments/$commentId'
   id:
     | '__root__'
-    | '/'
-    | '/analytics'
-    | '/(post)/posts'
-    | '/(post)/posts/$postId'
-    | '/(post)/posts/$postId/comments'
-    | '/(post)/posts/$postId/comments/$commentId'
+    | '/_admin'
+    | '/_layout'
+    | '/_layout/analytics'
+    | '/_layout/home'
+    | '/_admin/(admin)/admin'
+    | '/_layout/(post)/posts'
+    | '/_layout/(post)/posts/$postId'
+    | '/_layout/(post)/posts/$postId/comments'
+    | '/_layout/(post)/posts/$postId/comments/$commentId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AnalyticsRoute: typeof AnalyticsRoute
-  postPostsRoute: typeof postPostsRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/analytics': {
-      id: '/analytics'
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout/home': {
+      id: '/_layout/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof LayoutHomeRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/analytics': {
+      id: '/_layout/analytics'
       path: '/analytics'
       fullPath: '/analytics'
-      preLoaderRoute: typeof AnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutAnalyticsRouteImport
+      parentRoute: typeof LayoutRoute
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(post)/posts': {
-      id: '/(post)/posts'
+    '/_layout/(post)/posts': {
+      id: '/_layout/(post)/posts'
       path: '/posts'
       fullPath: '/posts'
-      preLoaderRoute: typeof postPostsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutpostPostsRouteImport
+      parentRoute: typeof LayoutRoute
     }
-    '/(post)/posts/$postId': {
-      id: '/(post)/posts/$postId'
+    '/_admin/(admin)/admin': {
+      id: '/_admin/(admin)/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminadminAdminRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_layout/(post)/posts/$postId': {
+      id: '/_layout/(post)/posts/$postId'
       path: '/$postId'
       fullPath: '/posts/$postId'
-      preLoaderRoute: typeof postPostsPostIdRouteImport
-      parentRoute: typeof postPostsRoute
+      preLoaderRoute: typeof LayoutpostPostsPostIdRouteImport
+      parentRoute: typeof LayoutpostPostsRoute
     }
-    '/(post)/posts/$postId/comments': {
-      id: '/(post)/posts/$postId/comments'
+    '/_layout/(post)/posts/$postId/comments': {
+      id: '/_layout/(post)/posts/$postId/comments'
       path: '/comments'
       fullPath: '/posts/$postId/comments'
-      preLoaderRoute: typeof postPostsPostIdCommentsRouteImport
-      parentRoute: typeof postPostsPostIdRoute
+      preLoaderRoute: typeof LayoutpostPostsPostIdCommentsRouteImport
+      parentRoute: typeof LayoutpostPostsPostIdRoute
     }
-    '/(post)/posts/$postId/comments/$commentId': {
-      id: '/(post)/posts/$postId/comments/$commentId'
+    '/_layout/(post)/posts/$postId/comments/$commentId': {
+      id: '/_layout/(post)/posts/$postId/comments/$commentId'
       path: '/$commentId'
       fullPath: '/posts/$postId/comments/$commentId'
-      preLoaderRoute: typeof postPostsPostIdCommentsCommentIdRouteImport
-      parentRoute: typeof postPostsPostIdCommentsRoute
+      preLoaderRoute: typeof LayoutpostPostsPostIdCommentsCommentIdRouteImport
+      parentRoute: typeof LayoutpostPostsPostIdCommentsRoute
     }
   }
 }
 
-interface postPostsPostIdCommentsRouteChildren {
-  postPostsPostIdCommentsCommentIdRoute: typeof postPostsPostIdCommentsCommentIdRoute
+interface AdminRouteChildren {
+  AdminadminAdminRoute: typeof AdminadminAdminRoute
 }
 
-const postPostsPostIdCommentsRouteChildren: postPostsPostIdCommentsRouteChildren =
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminadminAdminRoute: AdminadminAdminRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface LayoutpostPostsPostIdCommentsRouteChildren {
+  LayoutpostPostsPostIdCommentsCommentIdRoute: typeof LayoutpostPostsPostIdCommentsCommentIdRoute
+}
+
+const LayoutpostPostsPostIdCommentsRouteChildren: LayoutpostPostsPostIdCommentsRouteChildren =
   {
-    postPostsPostIdCommentsCommentIdRoute:
-      postPostsPostIdCommentsCommentIdRoute,
+    LayoutpostPostsPostIdCommentsCommentIdRoute:
+      LayoutpostPostsPostIdCommentsCommentIdRoute,
   }
 
-const postPostsPostIdCommentsRouteWithChildren =
-  postPostsPostIdCommentsRoute._addFileChildren(
-    postPostsPostIdCommentsRouteChildren,
+const LayoutpostPostsPostIdCommentsRouteWithChildren =
+  LayoutpostPostsPostIdCommentsRoute._addFileChildren(
+    LayoutpostPostsPostIdCommentsRouteChildren,
   )
 
-interface postPostsPostIdRouteChildren {
-  postPostsPostIdCommentsRoute: typeof postPostsPostIdCommentsRouteWithChildren
+interface LayoutpostPostsPostIdRouteChildren {
+  LayoutpostPostsPostIdCommentsRoute: typeof LayoutpostPostsPostIdCommentsRouteWithChildren
 }
 
-const postPostsPostIdRouteChildren: postPostsPostIdRouteChildren = {
-  postPostsPostIdCommentsRoute: postPostsPostIdCommentsRouteWithChildren,
+const LayoutpostPostsPostIdRouteChildren: LayoutpostPostsPostIdRouteChildren = {
+  LayoutpostPostsPostIdCommentsRoute:
+    LayoutpostPostsPostIdCommentsRouteWithChildren,
 }
 
-const postPostsPostIdRouteWithChildren = postPostsPostIdRoute._addFileChildren(
-  postPostsPostIdRouteChildren,
+const LayoutpostPostsPostIdRouteWithChildren =
+  LayoutpostPostsPostIdRoute._addFileChildren(
+    LayoutpostPostsPostIdRouteChildren,
+  )
+
+interface LayoutpostPostsRouteChildren {
+  LayoutpostPostsPostIdRoute: typeof LayoutpostPostsPostIdRouteWithChildren
+}
+
+const LayoutpostPostsRouteChildren: LayoutpostPostsRouteChildren = {
+  LayoutpostPostsPostIdRoute: LayoutpostPostsPostIdRouteWithChildren,
+}
+
+const LayoutpostPostsRouteWithChildren = LayoutpostPostsRoute._addFileChildren(
+  LayoutpostPostsRouteChildren,
 )
 
-interface postPostsRouteChildren {
-  postPostsPostIdRoute: typeof postPostsPostIdRouteWithChildren
+interface LayoutRouteChildren {
+  LayoutAnalyticsRoute: typeof LayoutAnalyticsRoute
+  LayoutHomeRoute: typeof LayoutHomeRoute
+  LayoutpostPostsRoute: typeof LayoutpostPostsRouteWithChildren
 }
 
-const postPostsRouteChildren: postPostsRouteChildren = {
-  postPostsPostIdRoute: postPostsPostIdRouteWithChildren,
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutAnalyticsRoute: LayoutAnalyticsRoute,
+  LayoutHomeRoute: LayoutHomeRoute,
+  LayoutpostPostsRoute: LayoutpostPostsRouteWithChildren,
 }
 
-const postPostsRouteWithChildren = postPostsRoute._addFileChildren(
-  postPostsRouteChildren,
-)
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AnalyticsRoute: AnalyticsRoute,
-  postPostsRoute: postPostsRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -2,7 +2,9 @@ import { Link, Outlet, useLoaderData, useParams } from '@tanstack/react-router'
 
 export function PostPage() {
   const param = useParams({ strict: false })
-  const { currentTimeMs } = useLoaderData({ from: '/posts/$postId' })
+  const { currentTimeMs } = useLoaderData({
+    from: '/_layout/(post)/posts/$postId',
+  })
   const postId = param.postId ?? ''
 
   return (

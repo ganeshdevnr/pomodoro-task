@@ -3,7 +3,7 @@ import './NavBar.css'
 
 const options = linkOptions([
   {
-    to: '/',
+    to: '/home',
     label: 'Home',
     className: 'nav-link',
     activeProps: { className: 'active' },

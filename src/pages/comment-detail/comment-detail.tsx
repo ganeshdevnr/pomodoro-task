@@ -13,7 +13,7 @@ const commentDetails = {
 
 export function CommentDetailPage() {
   const { postId, commentId } = useParams({
-    from: '/posts/$postId/comments/$commentId',
+    from: '/_layout/(post)/posts/$postId/comments/$commentId',
   })
   const detail = commentDetails[commentId as keyof typeof commentDetails]
 

@@ -12,7 +12,9 @@ const comments = [
 ]
 
 export function CommentsPage() {
-  const { postId } = useParams({ from: '/posts/$postId/comments' })
+  const { postId } = useParams({
+    from: '/_layout/(post)/posts/$postId/comments',
+  })
 
   return (
     <section>
