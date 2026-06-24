@@ -13,8 +13,8 @@ import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as LayoutHomeRouteImport } from './routes/_layout.home'
 import { Route as LayoutAnalyticsRouteImport } from './routes/_layout.analytics'
+import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin/index'
 import { Route as LayoutpostPostsRouteImport } from './routes/_layout/(post)/posts'
-import { Route as AdminadminAdminRouteImport } from './routes/_admin/(admin)/admin'
 import { Route as LayoutpostPostsPostIdRouteImport } from './routes/_layout/(post)/posts.$postId'
 import { Route as LayoutpostPostsPostIdCommentsRouteImport } from './routes/_layout/(post)/posts.$postId.comments'
 import { Route as LayoutpostPostsPostIdCommentsCommentIdRouteImport } from './routes/_layout/(post)/posts.$postId.comments.$commentId'
@@ -37,15 +37,15 @@ const LayoutAnalyticsRoute = LayoutAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => LayoutRoute,
 } as any)
+const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const LayoutpostPostsRoute = LayoutpostPostsRouteImport.update({
   id: '/(post)/posts',
   path: '/posts',
   getParentRoute: () => LayoutRoute,
-} as any)
-const AdminadminAdminRoute = AdminadminAdminRouteImport.update({
-  id: '/(admin)/admin',
-  path: '/admin',
-  getParentRoute: () => AdminRoute,
 } as any)
 const LayoutpostPostsPostIdRoute = LayoutpostPostsPostIdRouteImport.update({
   id: '/$postId',
@@ -69,8 +69,8 @@ export interface FileRoutesByFullPath {
   '/': typeof LayoutRouteWithChildren
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
-  '/admin': typeof AdminadminAdminRoute
   '/posts': typeof LayoutpostPostsRouteWithChildren
+  '/admin/': typeof AdminAdminIndexRoute
   '/posts/$postId': typeof LayoutpostPostsPostIdRouteWithChildren
   '/posts/$postId/comments': typeof LayoutpostPostsPostIdCommentsRouteWithChildren
   '/posts/$postId/comments/$commentId': typeof LayoutpostPostsPostIdCommentsCommentIdRoute
@@ -79,8 +79,8 @@ export interface FileRoutesByTo {
   '/': typeof LayoutRouteWithChildren
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
-  '/admin': typeof AdminadminAdminRoute
   '/posts': typeof LayoutpostPostsRouteWithChildren
+  '/admin': typeof AdminAdminIndexRoute
   '/posts/$postId': typeof LayoutpostPostsPostIdRouteWithChildren
   '/posts/$postId/comments': typeof LayoutpostPostsPostIdCommentsRouteWithChildren
   '/posts/$postId/comments/$commentId': typeof LayoutpostPostsPostIdCommentsCommentIdRoute
@@ -91,8 +91,8 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/analytics': typeof LayoutAnalyticsRoute
   '/_layout/home': typeof LayoutHomeRoute
-  '/_admin/(admin)/admin': typeof AdminadminAdminRoute
   '/_layout/(post)/posts': typeof LayoutpostPostsRouteWithChildren
+  '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_layout/(post)/posts/$postId': typeof LayoutpostPostsPostIdRouteWithChildren
   '/_layout/(post)/posts/$postId/comments': typeof LayoutpostPostsPostIdCommentsRouteWithChildren
   '/_layout/(post)/posts/$postId/comments/$commentId': typeof LayoutpostPostsPostIdCommentsCommentIdRoute
@@ -103,8 +103,8 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/home'
-    | '/admin'
     | '/posts'
+    | '/admin/'
     | '/posts/$postId'
     | '/posts/$postId/comments'
     | '/posts/$postId/comments/$commentId'
@@ -113,8 +113,8 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/home'
-    | '/admin'
     | '/posts'
+    | '/admin'
     | '/posts/$postId'
     | '/posts/$postId/comments'
     | '/posts/$postId/comments/$commentId'
@@ -124,8 +124,8 @@ export interface FileRouteTypes {
     | '/_layout'
     | '/_layout/analytics'
     | '/_layout/home'
-    | '/_admin/(admin)/admin'
     | '/_layout/(post)/posts'
+    | '/_admin/admin/'
     | '/_layout/(post)/posts/$postId'
     | '/_layout/(post)/posts/$postId/comments'
     | '/_layout/(post)/posts/$postId/comments/$commentId'
@@ -166,19 +166,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAnalyticsRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_layout/(post)/posts': {
       id: '/_layout/(post)/posts'
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof LayoutpostPostsRouteImport
       parentRoute: typeof LayoutRoute
-    }
-    '/_admin/(admin)/admin': {
-      id: '/_admin/(admin)/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminadminAdminRouteImport
-      parentRoute: typeof AdminRoute
     }
     '/_layout/(post)/posts/$postId': {
       id: '/_layout/(post)/posts/$postId'
@@ -205,11 +205,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
-  AdminadminAdminRoute: typeof AdminadminAdminRoute
+  AdminAdminIndexRoute: typeof AdminAdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminadminAdminRoute: AdminadminAdminRoute,
+  AdminAdminIndexRoute: AdminAdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

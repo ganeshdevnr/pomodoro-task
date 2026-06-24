@@ -1,33 +1,46 @@
 import { Link, linkOptions } from '@tanstack/react-router'
 import './NavBar.css'
 
-const options = linkOptions([
+const options = [
   {
-    to: '/home',
     label: 'Home',
-    className: 'nav-link',
-    activeProps: { className: 'active' },
+    link: linkOptions({
+      to: '/home',
+      className: 'nav-link',
+      activeProps: { className: 'active' },
+    }),
   },
   {
-    to: '/analytics',
     label: 'Analytics',
-    className: 'nav-link',
-    activeProps: { className: 'active' },
+    link: linkOptions({
+      to: '/analytics',
+      className: 'nav-link',
+      activeProps: { className: 'active' },
+    }),
   },
   {
-    to: '/posts',
     label: 'Posts',
-    className: 'nav-link',
-    activeProps: { className: 'active' },
+    link: linkOptions({
+      to: '/posts',
+      className: 'nav-link',
+      activeProps: { className: 'active' },
+      search: {
+        pageIndex: 3,
+        categories: [],
+        something: {
+          else: 123,
+        },
+      },
+    }),
   },
-])
+]
 
 export function NavBar() {
   return (
     <nav className="navbar">
       {options.map((option) => {
         return (
-          <Link {...option} key={option.to}>
+          <Link {...option.link} key={option.link.to}>
             {option.label}
           </Link>
         )
