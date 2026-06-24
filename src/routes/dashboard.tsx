@@ -9,8 +9,12 @@ const dashboardSearchSchema = z.object({
 export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,
   validateSearch: dashboardSearchSchema,
+  beforeLoad: () => {
+    return { user: { name: 'test' } }
+  },
   loaderDeps: ({ search: { page } }) => ({ page }),
-  loader: async ({ deps: { page } }) => {
+  loader: async ({ deps: { page }, context: { user } }) => {
+    console.log(user)
     const limit = 10
     const _page = page
     const skip = _page * limit
