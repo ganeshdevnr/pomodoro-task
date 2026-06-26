@@ -13,15 +13,24 @@ export const Route = createFileRoute('/dashboard')({
     return { user: { name: 'test' } }
   },
   loaderDeps: ({ search: { page } }) => ({ page }),
-  loader: async ({ deps: { page }, context: { user } }) => {
-    console.log(user)
+  loader: async ({ deps: { page }, abortController }) => {
     const limit = 10
     const _page = page
     const skip = _page * limit
-    const response = await fetch(
-      `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
-    )
-    return response.json()
+    try {
+      const response = await fetch(
+        `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
+        { signal: abortController.signal },
+      )
+      return response.json()
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        console.log('Abort error')
+        return { products: [] }
+      }
+
+      throw err
+    }
   },
-  staleTime: 10_000,
+  staleTime: Infinity,
 })
