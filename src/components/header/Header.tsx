@@ -1,25 +1,19 @@
 import type { PropsWithChildren } from 'react'
-import './Header.css'
-
-// interface HeaderProps {
-//   title: string
-//   children?: ReactNode
-// }
 
 interface HeaderProps {
   title: string
 }
 
 export function Header({ title, children }: PropsWithChildren<HeaderProps>) {
-  const headerStyle = {
-    color: '#333333',
-    fontFamily: 'Arial, sans-serif',
-  }
-
   return (
     <>
-      <p className="timer-label">Pomodoro</p>
-      <h1 className="header" style={headerStyle} id="timer-title">
+      <p className="mb-2 text-sm font-bold uppercase tracking-[0.14em] text-slate-800 dark:text-slate-100">
+        Pomodoro
+      </p>
+      <h1
+        className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl dark:text-slate-50"
+        id="timer-title"
+      >
         {title}
       </h1>
 
