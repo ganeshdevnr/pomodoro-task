@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
+    "@tanstack/react-query-devtools": "^5.101.2",
     "@tanstack/react-router": "^1.170.16",
     "@tanstack/react-router-devtools": "^1.167.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "react-error-boundary": "^6.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

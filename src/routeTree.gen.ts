@@ -9,7 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as NewdashboardRouteImport } from './routes/newdashboard'
+import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
@@ -21,9 +21,9 @@ import { Route as LayoutpostPostsPostIdRouteImport } from './routes/_layout/(pos
 import { Route as LayoutpostPostsPostIdCommentsRouteImport } from './routes/_layout/(post)/posts.$postId.comments'
 import { Route as LayoutpostPostsPostIdCommentsCommentIdRouteImport } from './routes/_layout/(post)/posts.$postId.comments.$commentId'
 
-const NewdashboardRoute = NewdashboardRouteImport.update({
-  id: '/newdashboard',
-  path: '/newdashboard',
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -82,7 +82,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/newdashboard': typeof NewdashboardRoute
+  '/weather': typeof WeatherRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
   '/admin/': typeof AdminIndexRoute
@@ -94,7 +94,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/newdashboard': typeof NewdashboardRoute
+  '/weather': typeof WeatherRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
   '/admin': typeof AdminIndexRoute
@@ -108,7 +108,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/_layout': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/newdashboard': typeof NewdashboardRoute
+  '/weather': typeof WeatherRoute
   '/_layout/analytics': typeof LayoutAnalyticsRoute
   '/_layout/home': typeof LayoutHomeRoute
   '/admin/': typeof AdminIndexRoute
@@ -123,7 +123,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/'
     | '/dashboard'
-    | '/newdashboard'
+    | '/weather'
     | '/analytics'
     | '/home'
     | '/admin/'
@@ -135,7 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
-    | '/newdashboard'
+    | '/weather'
     | '/analytics'
     | '/home'
     | '/admin'
@@ -148,7 +148,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/_layout'
     | '/dashboard'
-    | '/newdashboard'
+    | '/weather'
     | '/_layout/analytics'
     | '/_layout/home'
     | '/admin/'
@@ -162,16 +162,16 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   LayoutRoute: typeof LayoutRouteWithChildren
   DashboardRoute: typeof DashboardRoute
-  NewdashboardRoute: typeof NewdashboardRoute
+  WeatherRoute: typeof WeatherRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/newdashboard': {
-      id: '/newdashboard'
-      path: '/newdashboard'
-      fullPath: '/newdashboard'
-      preLoaderRoute: typeof NewdashboardRouteImport
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -319,7 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   LayoutRoute: LayoutRouteWithChildren,
   DashboardRoute: DashboardRoute,
-  NewdashboardRoute: NewdashboardRoute,
+  WeatherRoute: WeatherRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
