@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as NewdashboardRouteImport } from './routes/newdashboard'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
@@ -20,6 +21,11 @@ import { Route as LayoutpostPostsPostIdRouteImport } from './routes/_layout/(pos
 import { Route as LayoutpostPostsPostIdCommentsRouteImport } from './routes/_layout/(post)/posts.$postId.comments'
 import { Route as LayoutpostPostsPostIdCommentsCommentIdRouteImport } from './routes/_layout/(post)/posts.$postId.comments.$commentId'
 
+const NewdashboardRoute = NewdashboardRouteImport.update({
+  id: '/newdashboard',
+  path: '/newdashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/newdashboard': typeof NewdashboardRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
   '/admin/': typeof AdminIndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/newdashboard': typeof NewdashboardRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
   '/admin': typeof AdminIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/_layout': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/newdashboard': typeof NewdashboardRoute
   '/_layout/analytics': typeof LayoutAnalyticsRoute
   '/_layout/home': typeof LayoutHomeRoute
   '/admin/': typeof AdminIndexRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/'
     | '/dashboard'
+    | '/newdashboard'
     | '/analytics'
     | '/home'
     | '/admin/'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/newdashboard'
     | '/analytics'
     | '/home'
     | '/admin'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/_layout'
     | '/dashboard'
+    | '/newdashboard'
     | '/_layout/analytics'
     | '/_layout/home'
     | '/admin/'
@@ -150,10 +162,18 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   LayoutRoute: typeof LayoutRouteWithChildren
   DashboardRoute: typeof DashboardRoute
+  NewdashboardRoute: typeof NewdashboardRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/newdashboard': {
+      id: '/newdashboard'
+      path: '/newdashboard'
+      fullPath: '/newdashboard'
+      preLoaderRoute: typeof NewdashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   LayoutRoute: LayoutRouteWithChildren,
   DashboardRoute: DashboardRoute,
+  NewdashboardRoute: NewdashboardRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
