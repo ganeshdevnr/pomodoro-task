@@ -1,13 +1,13 @@
-import { Suspense, useTransition } from 'react'
+import { Suspense, useState, useTransition } from 'react'
 import {
   useSuspenseQuery,
   QueryErrorResetBoundary,
 } from '@tanstack/react-query'
-import { useNavigate, useSearch } from '@tanstack/react-router'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary'
 import {
+  DEFAULT_WEATHER_CITY,
   WEATHER_CITY_KEYS,
   WEATHER_LOCATIONS,
   type WeatherCity,
@@ -17,8 +17,7 @@ import {
 const hourlyForecastLimit = 8
 
 export function NewDashboard() {
-  const { city } = useSearch({ from: '/weather' })
-  const navigate = useNavigate({ from: '/weather' })
+  const [city, setCity] = useState<WeatherCity>(DEFAULT_WEATHER_CITY)
   const [isPending, startTransition] = useTransition()
   const location = WEATHER_LOCATIONS[city]
 
@@ -26,9 +25,7 @@ export function NewDashboard() {
     const nextCity = event.target.value as WeatherCity
 
     startTransition(() => {
-      void navigate({
-        search: { city: nextCity },
-      })
+      setCity(nextCity)
     })
   }
 
@@ -49,8 +46,14 @@ export function NewDashboard() {
             </p>
           </div>
 
-          <div className="min-w-56">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
+          <div className="flex min-w-80 items-end gap-3">
+            <p
+              aria-live="polite"
+              className="w-28 pb-2 text-right text-sm text-sky-700 dark:text-sky-300"
+            >
+              {isPending ? 'Updating...' : null}
+            </p>
+            <label className="block flex-1 text-sm font-medium text-slate-700 dark:text-slate-200">
               City
               <select
                 aria-busy={isPending}
@@ -65,11 +68,6 @@ export function NewDashboard() {
                 ))}
               </select>
             </label>
-            {isPending ? (
-              <p className="mt-2 text-sm text-sky-700 dark:text-sky-300">
-                Updating weather...
-              </p>
-            ) : null}
           </div>
         </div>
 
