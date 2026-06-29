@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WeatherRouteImport } from './routes/weather'
+import { Route as StoreRouteImport } from './routes/store'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
@@ -24,6 +25,11 @@ import { Route as LayoutpostPostsPostIdCommentsCommentIdRouteImport } from './ro
 const WeatherRoute = WeatherRouteImport.update({
   id: '/weather',
   path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoreRoute = StoreRouteImport.update({
+  id: '/store',
+  path: '/store',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/store': typeof StoreRoute
   '/weather': typeof WeatherRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/store': typeof StoreRoute
   '/weather': typeof WeatherRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/_layout': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/store': typeof StoreRoute
   '/weather': typeof WeatherRoute
   '/_layout/analytics': typeof LayoutAnalyticsRoute
   '/_layout/home': typeof LayoutHomeRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/'
     | '/dashboard'
+    | '/store'
     | '/weather'
     | '/analytics'
     | '/home'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/store'
     | '/weather'
     | '/analytics'
     | '/home'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/_layout'
     | '/dashboard'
+    | '/store'
     | '/weather'
     | '/_layout/analytics'
     | '/_layout/home'
@@ -162,6 +174,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   LayoutRoute: typeof LayoutRouteWithChildren
   DashboardRoute: typeof DashboardRoute
+  StoreRoute: typeof StoreRoute
   WeatherRoute: typeof WeatherRoute
 }
 
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       path: '/weather'
       fullPath: '/weather'
       preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/store': {
+      id: '/store'
+      path: '/store'
+      fullPath: '/store'
+      preLoaderRoute: typeof StoreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -319,6 +339,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   LayoutRoute: LayoutRouteWithChildren,
   DashboardRoute: DashboardRoute,
+  StoreRoute: StoreRoute,
   WeatherRoute: WeatherRoute,
 }
 export const routeTree = rootRouteImport
