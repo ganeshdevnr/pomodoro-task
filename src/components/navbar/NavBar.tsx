@@ -38,6 +38,14 @@ const options = [
       },
     }),
   },
+  {
+    label: 'Tic Tac',
+    link: linkOptions({
+      to: '/tic-tac',
+      className: navLinkClass,
+      activeProps: { className: activeNavLinkClass },
+    }),
+  },
 ]
 
 export function NavBar() {

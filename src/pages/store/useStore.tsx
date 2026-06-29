@@ -7,5 +7,10 @@ export interface Data {
 
 export const useStore = create<Data>((set) => ({
   bears: 100,
-  updateBears: (newBears: number) => set({ bears: newBears }),
+  updateBears: (newBears: number) => {
+    console.log('testing')
+    // prepare the new state
+
+    set({ bears: newBears })
+  },
 }))

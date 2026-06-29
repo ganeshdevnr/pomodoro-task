@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WeatherRouteImport } from './routes/weather'
+import { Route as TicTacRouteImport } from './routes/tic-tac'
 import { Route as StoreRouteImport } from './routes/store'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LayoutRouteImport } from './routes/_layout'
@@ -25,6 +26,11 @@ import { Route as LayoutpostPostsPostIdCommentsCommentIdRouteImport } from './ro
 const WeatherRoute = WeatherRouteImport.update({
   id: '/weather',
   path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TicTacRoute = TicTacRouteImport.update({
+  id: '/tic-tac',
+  path: '/tic-tac',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StoreRoute = StoreRouteImport.update({
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/store': typeof StoreRoute
+  '/tic-tac': typeof TicTacRoute
   '/weather': typeof WeatherRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/store': typeof StoreRoute
+  '/tic-tac': typeof TicTacRoute
   '/weather': typeof WeatherRoute
   '/analytics': typeof LayoutAnalyticsRoute
   '/home': typeof LayoutHomeRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/store': typeof StoreRoute
+  '/tic-tac': typeof TicTacRoute
   '/weather': typeof WeatherRoute
   '/_layout/analytics': typeof LayoutAnalyticsRoute
   '/_layout/home': typeof LayoutHomeRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/store'
+    | '/tic-tac'
     | '/weather'
     | '/analytics'
     | '/home'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/store'
+    | '/tic-tac'
     | '/weather'
     | '/analytics'
     | '/home'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/_layout'
     | '/dashboard'
     | '/store'
+    | '/tic-tac'
     | '/weather'
     | '/_layout/analytics'
     | '/_layout/home'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   StoreRoute: typeof StoreRoute
+  TicTacRoute: typeof TicTacRoute
   WeatherRoute: typeof WeatherRoute
 }
 
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       path: '/weather'
       fullPath: '/weather'
       preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tic-tac': {
+      id: '/tic-tac'
+      path: '/tic-tac'
+      fullPath: '/tic-tac'
+      preLoaderRoute: typeof TicTacRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/store': {
@@ -340,6 +360,7 @@ const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
   DashboardRoute: DashboardRoute,
   StoreRoute: StoreRoute,
+  TicTacRoute: TicTacRoute,
   WeatherRoute: WeatherRoute,
 }
 export const routeTree = rootRouteImport
