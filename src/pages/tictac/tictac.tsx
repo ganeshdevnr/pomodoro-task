@@ -11,8 +11,6 @@ type SquareValue = 'X' | 'O' | null
 // ]
 
 interface TicTacState {
-  currentPlayer: SquareValue
-  //   state: SquareValue[]
   click: (position: number) => void
   history: Array<SquareValue[]>
   gotoMove: (index: number) => void
@@ -22,48 +20,32 @@ interface TicTacState {
 const useTicTac = create<TicTacState>((set) => {
   return {
     history: [[null, null, null, null, null, null, null, null, null]],
-    currentPlayer: 'X',
-    // state: [null, null, null, null, null, null, null, null, null],
     click: (position: number) => {
       return set((state) => {
-        // check if currentMove is less than history.length. if so, then truncate the history
-        if (state.currentMove < state.history.length - 1) {
-          const newHistory = state.history.slice(0, state.currentMove + 1)
+        const history = state.history.slice(0, state.currentMove + 1)
+        const board = history[state.currentMove]
+        const winner = calculateWinner(board)
 
-          const _currentPlayer = newHistory.length % 2 === 0 ? 'O' : 'X'
-
-          const _newState = newHistory[newHistory.length - 1].map(
-            (value, index) => {
-              return index === position - 1 ? _currentPlayer : value
-            },
-          )
-
-          return {
-            history: [...newHistory, [..._newState]],
-            currentMove: newHistory.length,
-            currentPlayer: _currentPlayer === 'X' ? 'O' : 'X',
-          }
+        if (board[position - 1] || winner) {
+          return {}
         }
 
-        // calculate the new state
-        const latestState = state.history[state.history.length - 1]
+        const currentPlayer = state.currentMove % 2 === 0 ? 'X' : 'O'
 
-        const newState = latestState.map((value, index) => {
-          return index === position - 1 ? state.currentPlayer : value
+        const newBoard = board.map((value, index) => {
+          return index === position - 1 ? currentPlayer : value
         })
 
         return {
-          currentPlayer: state.currentPlayer === 'X' ? 'O' : 'X',
-          history: [...state.history, [...newState]],
-          currentMove: state.history.length,
+          history: [...history, newBoard],
+          currentMove: history.length,
         }
       })
     },
-    currentMove: 0, // default is 1
+    currentMove: 0,
     gotoMove: (index: number) => {
       return set({
         currentMove: index,
-        currentPlayer: index % 2 === 0 ? 'X' : 'O',
       })
     },
   }
@@ -88,7 +70,15 @@ export function TicTacComponent() {
 }
 
 function GameStatus() {
-  const nextPlayer = useTicTac((state) => state.currentPlayer)
+  const currentMove = useTicTac((state) => state.currentMove)
+  const board = useTicTac((state) => state.history)[currentMove]
+  const winner = calculateWinner(board)
+  const nextPlayer = currentMove % 2 === 0 ? 'X' : 'O'
+  const status = winner
+    ? `Winner: ${winner}`
+    : board.every(Boolean)
+      ? 'Draw'
+      : `Next player: ${nextPlayer}`
 
   return (
     <header className="mb-6 text-center sm:text-left">
@@ -107,7 +97,7 @@ function GameStatus() {
       </p>
 
       <div className="mt-5 inline-flex rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-bold text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
-        Next player: {nextPlayer}
+        {status}
       </div>
     </header>
   )
@@ -137,12 +127,6 @@ function calculateWinner(squares: SquareValue[]) {
 function Board() {
   const currentMove = useTicTac((state) => state.currentMove)
   const board = useTicTac((state) => state.history)[currentMove]
-
-  const winner = calculateWinner(board)
-
-  console.log(winner)
-
-  console.log(board)
 
   return (
     <div
@@ -174,6 +158,7 @@ function Square({ value, position }: { value: SquareValue; position: number }) {
 
 function MoveHistory() {
   const moveHistory = useTicTac((state) => state.history)
+  const currentMove = useTicTac((state) => state.currentMove)
 
   const goToMove = useTicTac((state) => state.gotoMove)
 
@@ -187,13 +172,19 @@ function MoveHistory() {
       </p>
 
       <ol className="mt-5 space-y-3">
-        {moveHistory.map((move, index) => {
+        {moveHistory.map((_, index) => {
+          const isActive = index === currentMove
+
           return (
-            <li>
+            <li key={index}>
               <button
                 onClick={() => goToMove(index)}
                 type="button"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-500 dark:border-slate-700 dark:text-slate-200 dark:hover:border-rose-500/60 dark:hover:bg-rose-500/10 dark:hover:text-rose-200"
+                className={`w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-500 ${
+                  isActive
+                    ? 'border-rose-300 bg-rose-50 text-rose-700 dark:border-rose-500/60 dark:bg-rose-500/10 dark:text-rose-200'
+                    : 'border-slate-200 text-slate-700 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-rose-500/60 dark:hover:bg-rose-500/10 dark:hover:text-rose-200'
+                }`}
               >
                 <span className="mr-2 text-rose-600 dark:text-rose-300">
                   {String(index).padStart(2, '0')}
